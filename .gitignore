@@ -1,0 +1,5 @@
+# Ignore client_secret.json
+client_secret.json
+
+# Ignore .env file
+.env

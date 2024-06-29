@@ -6,19 +6,41 @@ import requests
 from google.oauth2 import id_token
 import google.auth.transport.requests
 from pip._vendor import cachecontrol
+from dotenv import load_dotenv
+
+import logging
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask("Google Login App")
-app.secret_key = "ghbiufgwifhewlfewifgwefewfjweigfew"
+app.secret_key =  os.environ.get("SECRET_KEY", "default_secret_key")
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-GOOGLE_CLIENT_ID = "213067786015-kh81r05opu1rh0ed8b9iu5rtfnfi29hs.apps.googleusercontent.com"
-client_secret_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
+REDIRECT_URI = os.environ.get("REDIRECT_URI", "http://localhost:5000/callback")
+#client_secret_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 
-flow = Flow.from_client_secrets_file(
-    client_secrets_file = client_secret_file,
+
+client_config = {
+    "web": {
+        "client_id": GOOGLE_CLIENT_ID,
+        "project_id": "deadlineguardian",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": GOOGLE_CLIENT_SECRET,
+        "redirect_uris": [REDIRECT_URI]
+    }
+}
+
+
+flow = Flow.from_client_config(
+    client_config,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://localhost:5000/callback"
+    redirect_uri=REDIRECT_URI
 )
 
 def login_is_required(function):
