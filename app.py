@@ -1,7 +1,7 @@
 import os
 import pathlib
 from google_auth_oauthlib.flow import Flow
-from flask import Flask, session, abort, render_template, redirect, request
+from flask import Flask, session, abort, redirect, request
 import requests
 from google.oauth2 import id_token
 import google.auth.transport.requests
