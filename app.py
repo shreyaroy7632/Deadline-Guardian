@@ -90,4 +90,4 @@ def protected_area():
     return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False,host = '0.0.0.0')
