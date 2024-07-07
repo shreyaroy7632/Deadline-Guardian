@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task List</title>
+</head>
+<body>
+    <h1>Welcome, {{ session['name'] }}</h1>
+    <h2>Task List</h2>
+    <ul>
+        {% for task in tasks %}
+        <li>{{ task.task }} <a href="/delete_task/{{ task.id }}">Delete</a></li>
+        {% endfor %}
+    </ul>
+    <form method="POST" action="/add_task">
+    <input type="text" name="content" placeholder="Task">
+    <input type="datetime-local" name="reminder" placeholder="Reminder">
+    <button type="submit">Add Task</button>
+    </form>
+    <br>
+    <a href="/logout"><button>Logout</button></a>
+</body>
+</html>
